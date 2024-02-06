@@ -12,7 +12,7 @@ class CarouselImage extends StatelessWidget {
       items: GlobalVariables.carouselImages.map((i) {
         //The Builder widget is used here to create a context for each carousel item.
         return Builder(
-            builder: (BuildContext) => Image.network(
+            builder: (BuildContext context) => Image.network(
                   i,
                   fit: BoxFit.cover,
                   height: 200,
