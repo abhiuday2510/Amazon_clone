@@ -9,7 +9,6 @@ class Product {
   final String category;
   final double price;
   final String? id;
-  final String? userId;
   //rating yet to be added
 
   Product({
@@ -20,7 +19,6 @@ class Product {
     required this.category,
     required this.price,
     this.id,
-    this.userId,
   });
 
   Map<String, dynamic> toMap() {
@@ -32,7 +30,6 @@ class Product {
       'category': category,
       'price': price,
       'id': id,
-      'userId': userId,
     };
   }
 
@@ -46,7 +43,6 @@ class Product {
       price: map['price'] as double,
       //here we need to change 'id' to '_id' as we have done in user.dart as well, since we have _id provided automatically by mongoDB
       id: map['_id'] != null ? map['_id'] as String : null,
-      userId: map['userId'] != null ? map['userId'] as String : null,
     );
   }
 
