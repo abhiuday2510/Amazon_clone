@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:amazon_clone/constants/error_handling.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../../constants/global_variables.dart';
 
 class AdminServices {
+  //TO LIST THE PRODUCT TO BE SOLD
   void sellProduct({
     required BuildContext context,
     required String name,
@@ -59,14 +61,45 @@ class AdminServices {
 
       httpErrorHandle(
         response: res,
-        context: context,
         onSucccess: () {
-          showSnackBar(context, "Product Added Successfully");
+          showSnackBar("Product Added Successfully");
           Navigator.pop(context);
         },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(e.toString());
     }
+  }
+
+  //TO GET ALL THE LISTED PRODUCTS TO DISPLAY THEM ON ADMIN SCREEN
+  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Product> productList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-product'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+      );
+
+      httpErrorHandle(
+          response: res,
+          onSucccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              productList.add(
+                //fromJson converts the given json to our product model
+                Product.fromJson(
+                  //fromJson expects string, to convert jsonDecode into string, we jsonEncode it
+                  jsonEncode(jsonDecode(res.body)[i]),
+                ),
+              );
+            }
+          });
+    } catch (e) {
+      showSnackBar(e.toString());
+    }
+    return productList;
   }
 }

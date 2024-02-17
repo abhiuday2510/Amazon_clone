@@ -19,4 +19,16 @@ adminRouter.post('/admin/add-product', admin, async (req, res) => {
     }
 })
 
+//GET ALL THE LISTED PRODUCTS
+adminRouter.get('/admin/get-product', admin, async(req, res) => {
+    try{
+        //by not specifying any criteria in the find({}), we are saying that we need all the products listed 
+        const products = await Product.find({});
+        //sending product data back to the client side
+        res.json(products);
+    } catch (e) {
+        res.status(500).json({error : e.message});
+    }
+})
+
 module.exports = adminRouter;

@@ -49,16 +49,14 @@ class AuthService {
       );
       httpErrorHandle(
         response: res,
-        context: context,
         onSucccess: () {
           showSnackBar(
-            context,
             'Account created! Login with the same credentials!',
           );
         },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(e.toString());
     }
   }
 
@@ -81,7 +79,6 @@ class AuthService {
       );
       httpErrorHandle(
         response: res,
-        context: context,
         onSucccess: () async {
           // Obtains shared preferences
           SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -99,7 +96,7 @@ class AuthService {
         },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(e.toString());
     }
   }
 
@@ -141,7 +138,7 @@ class AuthService {
         userProvider.setUser(userRes.body);
       }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(e.toString());
     }
   }
 }

@@ -8,6 +8,9 @@ import 'package:amazon_clone/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 void main() {
   runApp(
     //adding this multiprovider widget so that providers can be used anywhere in our application
@@ -18,14 +21,15 @@ void main() {
           create: (context) => UserProvider(),
         )
       ],
-      child: const MyApp(),
+      child: MyApp(scaffoldMessengerKey: scaffoldMessengerKey),
     ),
   );
 }
 
 //we are using myApp as stateful widget fince we are going to use init here to initialize the app, meaning if we want homepage or singin page on app launch
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  const MyApp({Key? key, required this.scaffoldMessengerKey}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -44,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: scaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
       title: 'Amazon Clone',
       //theme data is used to configure the theme off entire application
