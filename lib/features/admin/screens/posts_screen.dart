@@ -1,4 +1,5 @@
 import 'package:amazon_clone/common/widgets/loader.dart';
+import 'package:amazon_clone/features/account/widgets/single_product.dart';
 import 'package:amazon_clone/features/admin/screens/add_product_screen.dart';
 import 'package:amazon_clone/features/admin/services/admin_services.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +41,45 @@ class _PostsScreenState extends State<PostsScreen> {
     return products == null
         ? const Loader()
         : Scaffold(
-            body: const Center(
-              child: Text(
-                "Products Page",
+            //GridView.builder Creates a scrollable, 2D array of widgets that are created on demand.
+            //This is appropriate for grid views with a large (or infinite) number of children because the builder is called only for those children that are actually visible.
+            body: GridView.builder(
+              itemCount: products!.length,
+              //gridDelegate is a delegate that controls the layout of the children within the
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                //crossAxisCount denotes how many grids you want to display horizontally
+                crossAxisCount: 2,
               ),
+              itemBuilder: (context, index) {
+                final productData = products![index];
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 140,
+                      child: SingleProduct(
+                        //productData.images can be a list of images, but we only want to show the first image from it in the grid, hence productData.images[0]
+                        image: productData.images[0],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            productData.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.delete_outline),
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              },
             ),
             //using this button we go to a new page where we add new products
             floatingActionButton: FloatingActionButton(
