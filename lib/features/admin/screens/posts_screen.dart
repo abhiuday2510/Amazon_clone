@@ -21,7 +21,10 @@ class _PostsScreenState extends State<PostsScreen> {
 
   //a seperate function just to not mix our UI with our logic
   void navigateToAddProduct() {
-    Navigator.pushNamed(context, AddProductsScreen.routeName);
+    Navigator.pushNamed(context, AddProductsScreen.routeName)
+        //the below line executes the fetchAllProducts() function even when this screen is popped from some other screen
+        //especially used after clicking on the "sell" button , when this screen is popped, it adds the newly sold item on the client's side in realtime
+        .then((value) => fetchAllProducts());
   }
 
   //since initState cannot be async and we need an async function to fetch all the produts, we are creating a seperate fetchAllProducts() function

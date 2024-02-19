@@ -72,7 +72,9 @@ class AdminServices {
   }
 
   //TO GET ALL THE LISTED PRODUCTS TO DISPLAY THEM ON ADMIN SCREEN
-  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+  Future<List<Product>> fetchAllProducts(
+    BuildContext context,
+  ) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Product> productList = [];
     try {
