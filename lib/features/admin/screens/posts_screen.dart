@@ -36,6 +36,21 @@ class _PostsScreenState extends State<PostsScreen> {
     setState(() {});
   }
 
+  void deleteProduct(
+    Product product,
+    //index is needed so that we can delete it from the client side as well
+    int index,
+  ) {
+    adminServices.deleteProduct(
+      context: context,
+      product: product,
+      onSuccess: () async {
+        products!.removeAt(index);
+        setState(() {});
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return products == null
@@ -44,6 +59,7 @@ class _PostsScreenState extends State<PostsScreen> {
             //GridView.builder Creates a scrollable, 2D array of widgets that are created on demand.
             //This is appropriate for grid views with a large (or infinite) number of children because the builder is called only for those children that are actually visible.
             body: GridView.builder(
+              padding: const EdgeInsets.only(top: 10),
               itemCount: products!.length,
               //gridDelegate is a delegate that controls the layout of the children within the
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -65,14 +81,19 @@ class _PostsScreenState extends State<PostsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Expanded(
-                          child: Text(
-                            productData.name,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              productData.name,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            deleteProduct(productData, index);
+                          },
                           icon: const Icon(Icons.delete_outline),
                         ),
                       ],

@@ -102,4 +102,38 @@ class AdminServices {
     }
     return productList;
   }
+
+  //TO DELETE LISTED PRODUCT
+  void deleteProduct(
+      {required BuildContext context,
+      required Product product,
+      //onSuccess will help us delete the product from server side as well as client side simultaneously
+      //if we dont have onSuccess, we wont be able to call the setState method, hence not deleting from the client side realtime
+      required VoidCallback onSuccess}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    try {
+      http.Response res = await http.post(
+          Uri.parse('$uri/admin/delete-product'),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.user.token,
+          },
+          //we dont need to pass the entire product, only the product id is enough
+          body: jsonEncode(
+            {
+              'id': product.id,
+            },
+          ));
+
+      httpErrorHandle(
+        response: res,
+        onSucccess: () {
+          onSuccess();
+        },
+      );
+    } catch (e) {
+      showSnackBar(e.toString());
+    }
+  }
 }
