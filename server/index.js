@@ -1,11 +1,11 @@
 //IMPORT FROM PACKAGES
-//used like import statements
 const express = require('express');
 const mongoose = require("mongoose");
 
 //IMPORTS FROM OTHER FILES
 const authRouter = require("./routes/auth");
 const adminRouter = require('./routes/admin');
+const productRouter = require("./routes/product");
 
 //INITIALIZATIONS
 //we can mention any port number but 3000 is like a convention
@@ -24,6 +24,8 @@ app.use(express.json());
 app.use(authRouter);
 //by doing this, our node.js application now knows about the exsistance of adminRouter in admin.js file
 app.use(adminRouter);
+//by doing this, our node.js application now knows about the exsistance of productRouter in product.js file
+app.use(productRouter);
 
 
 //CONNECTIONS
