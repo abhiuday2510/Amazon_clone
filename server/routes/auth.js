@@ -86,7 +86,7 @@ authRouter.post('/api/signin', async (req,res) => {
         }
 
         //now making use of jsonwebtoken to sign in the user
-        //sign() Synchronously sign the given payload into a JSON Web Token string payload
+        //sign() : Synchronously sign the given payload into a JSON Web Token string payload
         //we need to provide an id and a secret key which is used to verify our request later on (if our jwt is correct or not)
         const token = jwt.sign({ id: user._id }, "passwordKey");
 

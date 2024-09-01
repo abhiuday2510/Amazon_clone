@@ -26,7 +26,7 @@ void main() {
   );
 }
 
-//we are using myApp as stateful widget fince we are going to use init here to initialize the app, meaning if we want homepage or singin page on app launch
+//we are using myApp as stateful widget since we are going to use init here to initialize the app, meaning if we want homepage or singin page on app launch
 class MyApp extends StatefulWidget {
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
   const MyApp({Key? key, required this.scaffoldMessengerKey}) : super(key: key);

@@ -17,8 +17,8 @@ const app = express();
 const DB = "mongodb+srv://abhiuday:Passw0rd@cluster0.ykypq.mongodb.net/?retryWrites=true&w=majority";
 
 //MIDDLEWARES   
-//it basically passes incoming requests with json payloads
-//we are using this since we have used a lot of destructuring which can be only be used on objects
+//It tells the Express app to use the built-in middleware function express.json(), which parses incoming requests with JSON payloads and makes the data available under the req.body property
+//Without this middleware, req.body would be undefined when the request body contains JSON data.
 app.use(express.json());
 //by doing this, our node.js application now knows about the exsistance of authRouter in auth.js file
 app.use(authRouter);
@@ -35,14 +35,15 @@ app.use(productRouter);
 mongoose
 .connect(DB)
 .then(() => {
-    console.log("Connection Successful");
+    console.log("Database Connection Successful");
+    //0.0.0.0 IP can be accessed from anywhere, be it localhost or any IP address
+    //() => {} is a way of using callback functions, they can also be used like : function(){}
+    app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
 })
 .catch((e) => {
-    console.log(e);
+    console.log("Database Connection unsuccessful"+e);
 })
 
-//0.0.0.0 IP can be accessed from anywhere, be it localhost or any IP address
-//() => {} is a way of using callback functions, they can also be used like : function(){}
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+

@@ -18,7 +18,7 @@ const auth = async (req, res, next) => {
         //we are adding a new object to this request which is user and we are saving something to it, which is verified.id
         //now everytime we cant pass in the body the user's id
         //so here in this middleware, we first perform all the validations and if the user is valid, we are storing user's id in req.user
-        //now we can simly use this middleware to access user's id using req.user
+        //now we can simply use this middleware to access user's id using req.user
         req.user = verified.id;
 
         //same like req.user, we are adding the token as well for its easy access
