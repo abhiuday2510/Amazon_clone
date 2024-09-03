@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //not declared inside the class cause we'd have to declare it static and then use GlobalVariables.uri everywhere, here we can directly use the variable
 //there instead of localhost we are using our device's ip address taken by running the given commands, windows : ipconfig, mac : ipconfig getifaddr en0
-String uri = 'http://192.168.1.2:3000';
+String uri = 'http://172.20.10.2:3000';
 
 class GlobalVariables {
   // COLORS

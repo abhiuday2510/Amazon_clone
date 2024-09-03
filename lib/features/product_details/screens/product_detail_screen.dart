@@ -4,9 +4,11 @@ import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/product_details/services/product_details_services.dart';
 import 'package:amazon_clone/features/search/screens/search_screen.dart';
 import 'package:amazon_clone/models/product.dart';
+import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   static const String routeName = '/product-details';
@@ -21,8 +23,35 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   ProductDetailsServices productDetailServices = ProductDetailsServices();
 
+  double avgRating = 0;
+  double myRating = 0;
+
+  //copied from homepage
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    double totalRating = 0;
+
+    //calculating total rating and updating myRating
+    for(int i=0; i<widget.product.ratings!.length; i++){
+      totalRating += widget.product.ratings![i].rating;
+
+      //updating myRating here itself to avoid looping it in another loop from i=0
+      if(widget.product.ratings![i].userId == Provider.of<UserProvider>(context, listen: false)){
+        myRating = widget.product.ratings![i].rating;
+      }
+    }
+
+    //calculating the avgRating of each product
+    if(totalRating != 0){
+      avgRating = totalRating/widget.product.ratings!.length;
+    }
+
+
   }
 
   @override
@@ -113,7 +142,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(widget.product.id!),
-                  const Stars(rating: 4),
+                  Stars(rating: avgRating),
                 ],
               ),
             ),
