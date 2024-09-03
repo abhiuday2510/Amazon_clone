@@ -34,4 +34,55 @@ productRouter.get('/api/products/search/:name', auth, async(req, res)=> {
     }
 })
 
+//post request route to rate the product
+productRouter.post('/api/rate-product', auth, async(req, res) => {
+    try{
+        //id is product id not user id
+        const {id, rating} = req.body;
+        
+        //we are using let instead of const since we are going to modify the product
+        let product = await Product.findById(id);
+
+        //looping through all the ratings a product has to find if the user has already rated the product
+        for(let i=0; i<product.ratings.length ; i++){
+
+            //we have access to req.user because of the auth middleware
+            if(product.ratings[i].userId == req.user){
+                //The splice() method is powerful for directly modifying arrays by adding, removing, or replacing elements at specific positions.
+                /*let arr = [1, 2, 3, 4, 5];
+                arr.splice(2, 2); // Removes 2 elements starting from index 2
+                console.log(arr); // Output: [1, 2, 5]
+
+                let arr = [1, 2, 3, 4, 5];
+                arr.splice(2, 0, 'a', 'b'); // Adds 'a' and 'b' at index 2
+                console.log(arr); // Output: [1, 2, 'a', 'b', 3, 4, 5]
+
+                let arr = [1, 2, 3, 4, 5];
+                arr.splice(2, 2, 'a', 'b'); // Replaces 2 elements at index 2 with 'a' and 'b'
+                console.log(arr); // Output: [1, 2, 'a', 'b', 5]*/
+
+                //the below line simply deletes the element at index i
+                product.ratings.splice(i,1);
+                break;
+            }
+        }
+        const ratingSchema = {
+            userId : req.user,
+            //we use shorthand syntax here
+            rating,
+        }
+
+        //push() is like add() in JS, adds element to the end of array
+        product.ratings.push(ratingSchema);
+
+        product = await product.save();
+
+        res.json(product);
+
+    }
+    catch(e){
+        res.status(500).json({error : e.message});
+    }
+})
+
 module.exports = productRouter;

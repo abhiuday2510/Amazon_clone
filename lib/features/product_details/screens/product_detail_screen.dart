@@ -1,6 +1,7 @@
 import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/common/widgets/stars.dart';
 import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/features/product_details/services/product_details_services.dart';
 import 'package:amazon_clone/features/search/screens/search_screen.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -17,6 +18,8 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+
+  ProductDetailsServices productDetailServices = ProductDetailsServices();
 
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
@@ -118,67 +121,69 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Text(widget.product.name, style: const TextStyle(fontSize: 15),),
             ),
             CarouselSlider(
-      //.map () maps and iterates over each element in carouselImages, referred to as i in this context.
-      items: widget.product.images.map((i) {
-        //The Builder widget is used here to create a context for each carousel item.
-        return Builder(
-            builder: (BuildContext context) => Image.network(
-                  i,
-                  fit: BoxFit.contain,
-                  height: 200,
-                ));
-      }).toList(),
-      options: CarouselOptions(
-        //The fraction of the viewport that each page should occupy, by default its 0.8
-        viewportFraction: 1,
-        height: 300,
-      ),
-    ),
-    const SizedBox(height: 4,),
-    Container(
-      color: Colors.black12,
-      height: 5,
-    ),
-    Padding(padding: const EdgeInsets.all(8), 
-    child: RichText(
-      text: TextSpan(text : 'Deal Price : ', style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
-      children: [
-        TextSpan(text : '\$${widget.product.price}', style: const TextStyle(fontSize: 22, color: Colors.red, fontWeight: FontWeight.w500),)
-      ]
-    ),),
-    ),
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(widget.product.description),
-    ),
-    Container(
-      color: Colors.black12,
-      height: 5,
-    ),
-    Padding(
-      padding: const EdgeInsets.all(10),
-      child: CustomButton(text: "Buy Now",backgroundColor: GlobalVariables.secondaryColor,foregroundColor: Colors.white, onTap: (){}),
-    ),
-    const SizedBox(height: 10,),
-    Padding(
-      padding: const EdgeInsets.all(10),
-      child: CustomButton(text: "Add to Cart",backgroundColor: const Color.fromRGBO(254, 216, 19, 1),foregroundColor: Colors.black, onTap: (){}),
-    ),
-    const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text("Rate the Product", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-    ),
-    //builds interactive rating for us to rate the product
-    RatingBar.builder(
-      initialRating: 0 ,
-      minRating: 1,
-      direction: Axis.horizontal,
-      allowHalfRating: true,
-      itemCount: 5,
-      itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-      itemBuilder: (context, _) => const Icon(Icons.star, color: GlobalVariables.secondaryColor,),
-            onRatingUpdate: (rating) {}
-     )
+              //.map () maps and iterates over each element in carouselImages, referred to as i in this context.
+              items: widget.product.images.map((i) {
+                //The Builder widget is used here to create a context for each carousel item.
+                return Builder(
+                    builder: (BuildContext context) => Image.network(
+                          i,
+                          fit: BoxFit.contain,
+                          height: 200,
+                        ));
+              }).toList(),
+              options: CarouselOptions(
+                //The fraction of the viewport that each page should occupy, by default its 0.8
+                viewportFraction: 1,
+                height: 300,
+              ),
+            ),
+            const SizedBox(height: 4,),
+            Container(
+              color: Colors.black12,
+              height: 5,
+            ),
+            Padding(padding: const EdgeInsets.all(8), 
+            child: RichText(
+              text: TextSpan(text : 'Deal Price : ', style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(text : '\$${widget.product.price}', style: const TextStyle(fontSize: 22, color: Colors.red, fontWeight: FontWeight.w500),)
+              ]
+            ),),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(widget.product.description),
+            ),
+            Container(
+              color: Colors.black12,
+              height: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: CustomButton(text: "Buy Now",backgroundColor: GlobalVariables.secondaryColor,foregroundColor: Colors.white, onTap: (){}),
+            ),
+            const SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: CustomButton(text: "Add to Cart",backgroundColor: const Color.fromRGBO(254, 216, 19, 1),foregroundColor: Colors.black, onTap: (){}),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text("Rate the Product", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+            ),
+            //builds interactive rating for us to rate the product
+            RatingBar.builder(
+              initialRating: 0 ,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+              itemBuilder: (context, _) => const Icon(Icons.star, color: GlobalVariables.secondaryColor,),
+                    onRatingUpdate: (rating) {
+                      productDetailServices.rateProduct(context: context, product: widget.product, rating: rating);
+                    }
+            )
         ],),
         ),
     );
