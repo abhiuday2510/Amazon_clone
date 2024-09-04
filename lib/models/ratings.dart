@@ -17,7 +17,7 @@ class Rating {
   factory Rating.fromMap(Map<String, dynamic> map) {
 
 
-    // Check if rating is an int and convert to double if necessary
+    // Check if rating is an int and convert to double if necessary, since in the backend its mentioned as number, so it can be both
     var ratingValue = map['rating'];
     double parsedRating;
     if (ratingValue is int) {

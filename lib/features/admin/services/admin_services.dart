@@ -93,7 +93,7 @@ class AdminServices {
               productList.add(
                 //fromJson converts the given json to our product model
                 Product.fromJson(
-                  //fromJson expects string, to convert jsonDecode into string, we jsonEncode it
+                  //fromJson expects JSON string, to convert jsonDecode(which is a dart map) into string, we jsonEncode it
                   jsonEncode(jsonDecode(res.body)[i]),
                 ),
               );

@@ -85,4 +85,42 @@ productRouter.post('/api/rate-product', auth, async(req, res) => {
     }
 })
 
+//get deal of the day
+//deal of the day depends on the product having highest rating
+productRouter.get('/api/deal-of-day', auth, async(req, res) => {
+    try{
+
+        //getting all teh products first
+        let products = await Product.find({});
+        
+        //sorting products in descending order to get the product with highest rating
+        //a is product 1 , b is product 2
+        //sort() method mutates the array and returns the reference to the sme array
+        products = products.sort((a, b) => {
+
+            //aSum and bSum calculates the total rating for a and b
+            let aSum = 0;
+            let bSum = 0;
+            for(let i = 0; i<a.ratings.length; i++){
+                aSum += a.ratings[i].rating;
+            }
+            for(let i = 0; i<b.ratings.length; i++){
+                bSum += b.ratings[i].rating;
+            }
+
+            //here we are giving the condition of sorting
+            //it is conventionally expected to return -ve if first arg is smaller than second arg, 0 if equal and +ve otherwise
+            //here we want it in descending order so doing opposite
+            return aSum < bSum ? 1 : -1;
+        })
+        res.json(products[0]);
+    }
+    catch(e){
+        res.status(500).json({error : e.message});
+    }
+    
+})
+
+
+
 module.exports = productRouter;

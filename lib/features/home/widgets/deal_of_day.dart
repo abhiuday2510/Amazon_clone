@@ -1,3 +1,6 @@
+import 'package:amazon_clone/common/widgets/loader.dart';
+import 'package:amazon_clone/features/home/services/home_services.dart';
+import 'package:amazon_clone/models/product.dart';
 import 'package:flutter/material.dart';
 
 class DealOfDay extends StatefulWidget {
@@ -7,10 +10,28 @@ class DealOfDay extends StatefulWidget {
   State<DealOfDay> createState() => _DealOfDayState();
 }
 
-class _DealOfDayState extends State<DealOfDay> {
+class _DealOfDayState extends State<DealOfDay> {  
+  Product? product;
+  final HomeServices homeServices = HomeServices();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDealOfDay();
+    setState(() {});
+  }
+
+  void fetchDealOfDay() async {
+    product = await homeServices.fetchDealOfDay(context: context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return product == null 
+    ? const Loader()
+    : product!.name.isEmpty 
+      ? const SizedBox() 
+      : Column(
       children: [
         Container(
           alignment: Alignment.topLeft,
@@ -23,7 +44,7 @@ class _DealOfDayState extends State<DealOfDay> {
           ),
         ),
         Image.network(
-          'https://images.unsplash.com/photo-1704677982215-a2248af6009b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDY1fFM0TUtMQXNCQjc0fHxlbnwwfHx8fHw%3D',
+          product!.images[0],
           height: 235,
           //Make sure the full height of the source is shown, regardless of whether this means the source overflows the target box horizontally.
           fit: BoxFit.fitHeight,
@@ -33,9 +54,9 @@ class _DealOfDayState extends State<DealOfDay> {
           padding: const EdgeInsets.only(
             left: 15,
           ),
-          child: const Text(
-            '\$100',
-            style: TextStyle(
+          child: Text(
+            '\$${product!.price}',
+            style: const TextStyle(
               fontSize: 18,
             ),
           ),
@@ -43,8 +64,8 @@ class _DealOfDayState extends State<DealOfDay> {
         Container(
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.only(left: 15, top: 5, right: 40),
-          child: const Text(
-            'Jordans',
+          child: Text(
+            product!.name,
             //If the text exceeds the given number of lines, it will be truncated according to overflow
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -54,32 +75,12 @@ class _DealOfDayState extends State<DealOfDay> {
           scrollDirection: Axis.horizontal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.network(
-                'https://plus.unsplash.com/premium_photo-1703703954453-a647dc3b2347?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDY5fFM0TUtMQXNCQjc0fHxlbnwwfHx8fHw%3D',
+            children: product!.images.map((e) => Image.network(
+                e,
                 fit: BoxFit.fitWidth,
                 width: 100,
                 height: 100,
-              ),
-              Image.network(
-                'https://plus.unsplash.com/premium_photo-1669644856868-6613f6683346?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmlrZXxlbnwwfHwwfHx8MA%3D%3D',
-                fit: BoxFit.fitWidth,
-                width: 100,
-                height: 100,
-              ),
-              Image.network(
-                'https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bmlrZXxlbnwwfHwwfHx8MA%3D%3D',
-                fit: BoxFit.fitWidth,
-                width: 100,
-                height: 100,
-              ),
-              Image.network(
-                'https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bmlrZXxlbnwwfHwwfHx8MA%3D%3D',
-                fit: BoxFit.fitWidth,
-                width: 100,
-                height: 100,
-              )
-            ],
+              ),).toList(), 
           ),
         ),
         Container(

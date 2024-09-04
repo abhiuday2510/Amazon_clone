@@ -43,4 +43,30 @@ class HomeServices {
     }
     return productList;
   }
+
+  Future<Product> fetchDealOfDay({
+    required BuildContext context,
+  }) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    
+    //we initialize dealOfDayProduct with emplty strings and 0 instead of making it nullable so that user does not see a constant loader if there is some error fetching the deal of the day or if it doesnt exists in the backend
+    Product dealOfDayProduct = Product(name: "", description: "", quantity: 0, images: [], category: "", price: 0);
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/deal-of-day'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+      );  
+      httpErrorHandle(
+          response: res,
+          onSucccess: () {
+            dealOfDayProduct = Product.fromJson(res.body);
+          });
+    } catch (e) {
+      showSnackBar(e.toString());
+    }
+    return dealOfDayProduct;
+  }
 }
