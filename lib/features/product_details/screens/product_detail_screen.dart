@@ -41,7 +41,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       totalRating += widget.product.ratings![i].rating;
 
       //updating myRating here itself to avoid looping it in another loop from i=0
-      if(widget.product.ratings![i].userId == Provider.of<UserProvider>(context, listen: false)){
+      if(widget.product.ratings![i].userId == Provider.of<UserProvider>(context, listen: false).user.id){
         myRating = widget.product.ratings![i].rating;
       }
     }
@@ -50,7 +50,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     if(totalRating != 0){
       avgRating = totalRating/widget.product.ratings!.length;
     }
-
 
   }
 
