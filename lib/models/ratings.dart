@@ -15,9 +15,23 @@ class Rating {
   }
 
   factory Rating.fromMap(Map<String, dynamic> map) {
+
+
+    // Check if rating is an int and convert to double if necessary
+    var ratingValue = map['rating'];
+    double parsedRating;
+    if (ratingValue is int) {
+      parsedRating = ratingValue.toDouble(); // Convert int to double
+    } else if (ratingValue is double) {
+      parsedRating = ratingValue;
+    } else {
+      throw Exception('Unexpected type for rating: ${ratingValue.runtimeType}');
+    }
+
+
     return Rating(
       userId: map['userId'] as String,
-      rating: map['rating'] as double,
+      rating: parsedRating,
     );
   }
 

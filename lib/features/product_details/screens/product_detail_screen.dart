@@ -202,7 +202,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
             //builds interactive rating for us to rate the product
             RatingBar.builder(
-              initialRating: 0 ,
+              initialRating: myRating,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,

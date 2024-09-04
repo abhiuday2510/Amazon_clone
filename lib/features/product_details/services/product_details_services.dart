@@ -41,5 +41,4 @@ class ProductDetailsServices{
       showSnackBar(e.toString());
     }
   }
-
 }
