@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const ratingSchema = require("./rating");
 
@@ -37,4 +36,6 @@ const productSchema = mongoose.Schema({
 });
 
 const Product = mongoose.model('Product', productSchema);
-module.exports = Product;
+
+//since we need productSchema in user model in cart, we need to export using this kind of destructuring
+module.exports = {Product, productSchema};

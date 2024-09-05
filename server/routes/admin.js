@@ -1,6 +1,7 @@
 const express = require("express");
 const admin = require("../middlewares/admin");
-const Product = require("../models/product");
+//importing product in this way since we have used diffeernt destructuring to export it
+const {Product} = require("../models/product");
 const adminRouter = express.Router();
 
 

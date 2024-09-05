@@ -1,5 +1,6 @@
 //we create user models with mongoose
 const mongoose = require("mongoose");
+const {productSchema} = require('./product')
 
 //schema is like the structure of the user model we are going to create, this is not the final model
 const userSchema = mongoose.Schema({
@@ -45,8 +46,17 @@ const userSchema = mongoose.Schema({
     type: {
         type: String, 
         default: "user",
-    }
-    //CART
+    },
+    cart : [
+        {
+            //we are not passing product here since we cannot pass model, we need to pass schema
+            product : productSchema,
+            quantity : {
+                type : Number,
+                required : true,
+            }
+        }
+    ]
 });
 
 //using the above schema to create the final model

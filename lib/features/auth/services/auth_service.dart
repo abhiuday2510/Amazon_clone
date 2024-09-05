@@ -31,6 +31,7 @@ class AuthService {
         type: "",
         token: "",
         email: email,
+        cart: [],
       );
 
       //since sign up is a post request, we use http.post

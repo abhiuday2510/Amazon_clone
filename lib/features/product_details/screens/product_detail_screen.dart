@@ -53,6 +53,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   }
 
+  void addToCart(){
+    productDetailServices.addToCart(context: context, product: widget.product);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,7 +197,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             const SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: CustomButton(text: "Add to Cart",backgroundColor: const Color.fromRGBO(254, 216, 19, 1),foregroundColor: Colors.black, onTap: (){}),
+              child: CustomButton(text: "Add to Cart",backgroundColor: const Color.fromRGBO(254, 216, 19, 1),foregroundColor: Colors.black, onTap: (){addToCart();}),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),

@@ -10,7 +10,9 @@ class UserProvider extends ChangeNotifier {
       address: "",
       type: "",
       token: "",
-      email: "");
+      email: "", 
+      cart: []
+    );
 
   //since the _user is a private variable, we need to make a getter for it
   User get user => _user;
@@ -21,6 +23,12 @@ class UserProvider extends ChangeNotifier {
     _user = User.fromJson(user);
 
     //this notifies everywhere that the user value has been change and asks for a rebuild
+    notifyListeners();
+  }
+
+  //used when we want to set user from a user model
+  void setUserFromModel( User user){
+    _user = user;
     notifyListeners();
   }
 }

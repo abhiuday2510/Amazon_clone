@@ -1,8 +1,10 @@
 import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/account/screens/accounts_screen.dart';
 import 'package:amazon_clone/features/home/screens/home_screen.dart';
+import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 class BottomBar extends StatefulWidget {
   static const String routeName = '/actual-home';
@@ -36,6 +38,10 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+
+    //contect.watch() is a short syntax of Provider.of(context)
+    final userCartLength = context.watch<UserProvider>().user.cart.length;
+
     return Scaffold(
       //the body is goint to be the widget at a particualr index which we are changing by tapping different icons of the bottom navigation bar
       body: pages[_page],
@@ -98,13 +104,13 @@ class _BottomBarState extends State<BottomBar> {
                   ),
                 ),
                 //badge package is used to add badge(no of items) to the cart or any other icon
-                child: const badges.Badge(
-                  badgeStyle: badges.BadgeStyle(
+                child: badges.Badge(
+                  badgeStyle: const badges.BadgeStyle(
                     elevation: 0,
                     badgeColor: Colors.white,
                   ),
-                  badgeContent: Text('2'),
-                  child: Icon(Icons.shopping_cart_outlined),
+                  badgeContent: Text(userCartLength.toString()),
+                  child: const Icon(Icons.shopping_cart_outlined),
                 )),
             label: '',
           )
