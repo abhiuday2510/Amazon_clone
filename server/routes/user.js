@@ -36,6 +36,32 @@ const User = require("../models/user");
         }catch (e){
             res.status(500).json({error : e.message});
         }
-    })
+    });
+
+    //Delete product from cart
+    userRouter.delete('/api/remove-from-cart/:id', auth, async (req, res) => {
+        try{
+            const {id} = req.params;
+            const product = await Product.findById(id);
+            let user = await User.findById(req.user);
+            for(let i=0;i<user.cart.length; i++){
+                if(user.cart[i].product._id.equals(product._id)){
+                    if(user.cart[i].quantity == 1){
+                        //splice() deletes based on what we enter
+                        //deletes the entire product from the cart if its quantity is 1
+                        //since we do not want product with 0 quantity in our cart
+                        user.cart.splice(i,1);
+                    }else {
+                        //if the product quantity in the cart is >1, we simply decrease its quantity
+                        user.cart[i].quantity -= 1;
+                    }
+                }
+            }
+            user = await user.save();
+            res.json(user);
+        }catch (e){
+            res.status(500).json({error : e.message});
+        }
+    });
 
 module.exports = userRouter;
