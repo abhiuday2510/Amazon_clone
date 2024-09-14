@@ -1,4 +1,3 @@
-import 'package:amazon_clone/features/product_details/screens/product_detail_screen.dart';
 import 'package:amazon_clone/features/product_details/services/product_details_services.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
